@@ -23,6 +23,7 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI';
     sub index { Amon2->context->create_response(200, [], 'top') }
     sub post_index { Amon2->context->create_response(200, [], 'post_top') }
     sub put_index { Amon2->context->create_response(200, [], 'put_top') }
+    sub patch_index { Amon2->context->create_response(200, [], 'patch_top') }
     sub remove_index { Amon2->context->create_response(200, [], 'remove_top') }
 
     package MyApp::Web::C::Blog;
@@ -46,6 +47,7 @@ use Test::Requires 'Test::WWW::Mechanize::PSGI';
     get '/',        'Root#index';
     post '/',        'Root#post_index';
     put '/',        'Root#put_index';
+    patch '/',        'Root#patch_index';
     delete_ '/',        'Root#remove_index';
     get '/my/foo', 'My#foo';
     get '/blog/{year}/{month}', 'Blog#monthly';
@@ -68,6 +70,8 @@ $mech->post_ok('/');
 $mech->content_is('post_top');
 $mech->put_ok('/');
 $mech->content_is('put_top');
+$mech->patch_ok('/');
+$mech->content_is('patch_top');
 $mech->delete_ok('/');
 $mech->content_is('remove_top');
 $mech->get_ok('/my/foo');
